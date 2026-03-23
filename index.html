@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRUTUS — Materiais de Construção</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:      #0a0a0a;
+  --graphite:   #141414;
+  --steel:      #1f1f1f;
+  --iron:       #2a2a2a;
+  --mid:        #3a3a3a;
+  --concrete:   #787878;
+  --dust:       #b8b0a6;
+  --white:      #f2ede6;
+  --orange:     #f5c200;
+  --orange-hot: #ffd000;
+  --orange-dim: rgba(245,194,0,0.12);
+  --glow:       rgba(245,194,0,0.25);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:'Barlow',sans-serif;
+  overflow-x:hidden;
+}
+
+/* NOISE */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9000;opacity:.45;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 4rem;height:70px;
+  background:rgba(10,10,10,.9);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(245,194,0,.12);
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,.6);}
+
+.nav-logo-wrap{display:flex;align-items:center;gap:.9rem;text-decoration:none;}
+.nav-logo-img{height:38px;object-fit:contain;}
+.nav-logo-text{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.85rem;letter-spacing:.08em;color:var(--white);
+}
+.nav-logo-text span{color:var(--orange);}
+
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.82rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dust);text-decoration:none;
+  transition:color .2s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--orange);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .28s;
+}
+.nav-links a:hover{color:var(--white);}
+.nav-links a:hover::after{transform:scaleX(1);}
+
+.nav-cta{
+  background:var(--orange)!important;color:var(--black)!important;
+  padding:.5rem 1.4rem;
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+  transition:background .2s!important;
+}
+.nav-cta::after{display:none!important;}
+.nav-cta:hover{background:var(--orange-hot)!important;}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:54% 46%;
+  padding-top:70px;
+  position:relative;overflow:hidden;
+}
+
+/* grid lines bg */
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.018) 79px,rgba(255,255,255,.018) 80px),
+    repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(255,255,255,.018) 79px,rgba(255,255,255,.018) 80px);
+  pointer-events:none;z-index:0;
+}
+
+.hero-glow{
+  position:absolute;top:50%;right:35%;
+  transform:translate(50%,-50%);
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(245,194,0,.1) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+/* left */
+.hero-left{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:5rem 3.5rem 5rem 4rem;
+}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.7rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:2rem;
+  animation:fadeUp .7s .05s both;
+}
+.hero-eyebrow::before{content:'';width:32px;height:1.5px;background:var(--orange);}
+
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,8vw,8rem);
+  line-height:.88;letter-spacing:.02em;
+  margin-bottom:1.8rem;
+  animation:fadeUp .7s .15s both;
+}
+.hero-title em{
+  font-style:normal;
+  color:transparent;
+  -webkit-text-stroke:2px var(--orange);
+}
+
+.hero-tagline{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:1.2rem;font-weight:300;
+  letter-spacing:.06em;color:var(--dust);
+  margin-bottom:1.4rem;
+  animation:fadeUp .7s .25s both;
+}
+
+.hero-desc{
+  font-size:.93rem;line-height:1.82;
+  color:var(--concrete);max-width:420px;
+  margin-bottom:2.8rem;
+  animation:fadeUp .7s .35s both;
+}
+
+.hero-actions{
+  display:flex;gap:1rem;align-items:center;
+  animation:fadeUp .7s .45s both;
+}
+
+/* right */
+.hero-right{
+  position:relative;z-index:2;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--graphite);
+  animation:fadeUp .9s .2s both;
+}
+
+.hero-right::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(105deg,var(--black) 0%,rgba(10,10,10,.2) 25%,transparent 50%);
+  z-index:1;pointer-events:none;
+}
+
+.hero-img{
+  width:100%;height:auto;
+  max-height:calc(100vh - 70px);
+  object-fit:contain;
+  display:block;
+  padding:2rem 1.5rem;
+  filter:brightness(.9) contrast(1.04);
+  transition:filter .4s;
+}
+.hero-img:hover{filter:brightness(.97) contrast(1.04);}
+
+.hero-badge{
+  position:absolute;bottom:3rem;right:3rem;z-index:2;
+  background:var(--orange);
+  padding:1.6rem 1.8rem;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.hero-badge-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3.2rem;line-height:1;color:var(--black);
+}
+.hero-badge-label{
+  font-size:.65rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(0,0,0,.65);margin-top:.2rem;
+}
+
+/* side cards overlay */
+.hero-cards{
+  position:absolute;left:2rem;bottom:3rem;
+  z-index:3;display:flex;flex-direction:column;gap:.8rem;
+}
+
+.hcard{
+  background:rgba(20,20,20,.88);
+  border:1px solid rgba(255,255,255,.06);
+  border-left:2.5px solid var(--orange);
+  padding:1rem 1.2rem;
+  backdrop-filter:blur(8px);
+  width:200px;
+  transition:border-color .3s,transform .3s;
+}
+.hcard:hover{border-color:var(--orange-hot);transform:translateX(4px);}
+.hcard-tag{font-family:'Barlow Condensed',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:.25rem;}
+.hcard-name{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.04em;}
+.hcard-spec{font-size:.7rem;color:var(--concrete);}
+
+/* ─── STATS BAR ─── */
+.stats{
+  background:var(--orange);
+  display:flex;overflow:hidden;
+}
+.stat{
+  flex:1;padding:1.6rem 2rem;
+  border-right:1px solid rgba(0,0,0,.12);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.stat:last-child{border-right:none;}
+.stat-n{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.6rem;line-height:1;color:var(--black);
+}
+.stat-l{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.68rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(0,0,0,.55);margin-top:.2rem;
+}
+
+/* ─── MARQUEE ─── */
+.marquee{background:var(--graphite);border-top:1px solid rgba(255,255,255,.04);padding:.85rem 0;overflow:hidden;white-space:nowrap;}
+.mq-track{display:inline-flex;animation:mq 24s linear infinite;}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mq-item{display:inline-flex;align-items:center;gap:1rem;padding:0 2.2rem;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--concrete);}
+.mq-dot{width:4px;height:4px;background:var(--orange);border-radius:50%;}
+
+/* ─── SECTION COMMON ─── */
+.section{padding:7rem 4rem;}
+.section-alt{background:var(--graphite);}
+
+.s-eye{
+  display:flex;align-items:center;gap:.7rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.7rem;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:1rem;
+}
+.s-eye::before{content:'';width:24px;height:1.5px;background:var(--orange);}
+
+.s-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.8rem,5vw,4.5rem);
+  letter-spacing:.03em;line-height:.92;
+}
+.s-title em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--dust);}
+
+.s-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;}
+
+/* ─── CATEGORIES ─── */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2px;
+}
+.cat{
+  background:var(--steel);
+  padding:2.5rem 1.8rem;
+  display:flex;flex-direction:column;gap:.6rem;
+  text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.cat::before{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--orange);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .32s;
+}
+.cat-hover-glow{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 120%,rgba(245,194,0,.1),transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+.cat:hover{background:var(--iron);}
+.cat:hover::before{transform:scaleX(1);}
+.cat:hover .cat-hover-glow{opacity:1;}
+.cat-icon{font-size:1.7rem;margin-bottom:.3rem;}
+.cat-name{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.cat-desc{font-size:.78rem;color:var(--concrete);line-height:1.5;flex:1;}
+.cat-arrow{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);display:flex;align-items:center;gap:.3rem;margin-top:.5rem;transition:gap .2s;}
+.cat:hover .cat-arrow{gap:.6rem;}
+
+/* ─── STORE PHOTOS SPLIT ─── */
+.store-split{display:grid;grid-template-columns:1fr 1fr;}
+
+.store-photo{position:relative;overflow:hidden;aspect-ratio:unset;min-height:460px;}
+.store-photo img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(.65) contrast(1.08) sepia(8%);
+  transition:transform .6s ease,filter .4s;
+}
+.store-photo:hover img{transform:scale(1.05);filter:brightness(.75) contrast(1.08) sepia(0%);}
+.store-photo-cap{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:2.2rem;
+  background:linear-gradient(to top,rgba(10,10,10,.92),transparent);
+}
+.store-cap-tag{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:.4rem;}
+.store-cap-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em;}
+
+.store-panel{
+  background:var(--graphite);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:5rem;
+  border-left:1px solid rgba(255,255,255,.04);
+}
+.store-panel p{font-size:.9rem;line-height:1.85;color:var(--dust);margin-top:1.5rem;}
+.store-list{list-style:none;margin:2rem 0;display:flex;flex-direction:column;gap:.8rem;}
+.store-list li{display:flex;align-items:center;gap:.8rem;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.06em;color:var(--white);}
+.store-list li::before{content:'';width:18px;height:1.5px;background:var(--orange);flex-shrink:0;}
+
+/* ─── PRODUCTS ─── */
+.prod-grid{
+  display:grid;
+  grid-template-columns:2.2fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:2px;
+}
+
+.prod-card{
+  background:var(--graphite);
+  padding:2.5rem;
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.03);
+  transition:border-color .3s;
+}
+.prod-card:hover{border-color:rgba(245,194,0,.3);}
+
+.prod-card.featured{
+  grid-row:span 2;
+  min-height:500px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  background:
+    linear-gradient(to top,rgba(10,10,10,.97) 0%,rgba(10,10,10,.6) 45%,rgba(10,10,10,.15) 100%),
+    url('https://obrutus.com.br/wp-content/uploads/2022/02/2020-landscape-1-1200x500.png') center/cover;
+}
+.prod-card.featured:has(img){background:none;}
+
+.prod-tag{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem;}
+.prod-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.04em;line-height:1;margin-bottom:.6rem;}
+.prod-name.lg{font-size:3.2rem;}
+.prod-desc{font-size:.82rem;color:var(--dust);line-height:1.65;margin-bottom:1.5rem;}
+.prod-spec{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--concrete);
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.06);
+  padding:.3rem .75rem;margin-bottom:1rem;
+}
+.prod-badge{
+  position:absolute;top:1.5rem;right:1.5rem;
+  background:var(--orange);color:var(--black);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  padding:.28rem .7rem;
+}
+
+/* ─── ABOUT ─── */
+.about{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+}
+.about-visual{position:relative;}
+.about-img{
+  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+  background:url('https://obrutus.com.br/wp-content/uploads/2022/02/imagem1-1-1024x497.png') center/cover;
+  filter:brightness(.75) contrast(1.08);
+  transition:filter .4s;
+}
+.about-img:hover{filter:brightness(.85) contrast(1.05);}
+
+/* corner accent */
+.about-corner{
+  position:absolute;bottom:-1.5rem;right:-1.5rem;
+  width:160px;height:110px;
+  background:var(--orange);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.about-corner-num{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--black);line-height:1;}
+.about-corner-label{font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.65);text-align:center;margin-top:.15rem;line-height:1.35;}
+
+/* outline frame decoration */
+.about-frame{
+  position:absolute;top:1rem;left:1rem;right:-1rem;bottom:-1rem;
+  border:1px solid rgba(245,194,0,.2);
+  pointer-events:none;z-index:-1;
+}
+
+.about-text p{font-size:.9rem;line-height:1.85;color:var(--dust);margin-bottom:1.4rem;}
+
+/* ─── CTA BANNER ─── */
+.cta-banner{
+  background:var(--orange);
+  padding:5.5rem 4rem;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:3rem;
+  position:relative;overflow:hidden;
+}
+.cta-banner::before{
+  content:'BRUTUS';
+  position:absolute;right:-3rem;top:50%;
+  transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16rem;line-height:1;
+  color:rgba(0,0,0,.07);
+  letter-spacing:.02em;pointer-events:none;
+}
+.cta-banner-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.8rem,5.5vw,5rem);
+  color:var(--black);line-height:.92;letter-spacing:.02em;
+}
+.cta-banner-sub{
+  font-size:.92rem;color:rgba(0,0,0,.6);
+  margin-top:.9rem;font-weight:300;max-width:500px;line-height:1.75;
+}
+.cta-btns{display:flex;flex-direction:column;gap:.8rem;flex-shrink:0;}
+
+/* ─── CONTACT ─── */
+.contact{
+  display:grid;grid-template-columns:1fr 1fr;
+}
+.contact-info{
+  padding:6rem 4rem;background:var(--graphite);
+  display:flex;flex-direction:column;gap:2.5rem;
+}
+.c-item{display:flex;gap:1.2rem;align-items:flex-start;}
+.c-ico{
+  width:46px;height:46px;flex-shrink:0;
+  background:var(--orange-dim);
+  border:1px solid rgba(245,194,0,.25);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+.c-label{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem;}
+.c-val{font-size:.92rem;color:var(--white);line-height:1.5;}
+.c-val a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.1);transition:border-color .2s;}
+.c-val a:hover{border-color:var(--orange);}
+
+.contact-map{padding:0;overflow:hidden;position:relative;}
+.contact-map iframe{display:block;width:100%;height:100%;min-height:500px;border:0;filter:brightness(.7) contrast(1.1) grayscale(.2);}
+.contact-map-label{
+  position:absolute;top:2rem;left:2rem;
+  background:var(--black);
+  padding:.7rem 1.2rem;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);
+  border-left:2px solid var(--orange);
+}
+.contact-map-btn{
+  position:absolute;bottom:2rem;right:2rem;
+}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--graphite);
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:3rem 4rem;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;
+}
+.foot-logo{
+  display:flex;align-items:center;gap:.8rem;text-decoration:none;
+}
+.foot-logo img{height:34px;object-fit:contain;}
+.foot-logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.08em;color:var(--white);}
+.foot-logo-text span{color:var(--orange);}
+.foot-copy{font-size:.75rem;color:var(--concrete);}
+.foot-soc{display:flex;gap:.8rem;}
+.soc{
+  width:36px;height:36px;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--concrete);text-decoration:none;font-size:.82rem;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.soc:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-dim);}
+
+/* ─── BUTTONS ─── */
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--orange);color:var(--black);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;padding:.95rem 2.2rem;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
+  transition:background .2s,transform .2s;
+  border:none;cursor:pointer;
+}
+.btn-primary:hover{background:var(--orange-hot);transform:translateY(-2px);}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  color:var(--dust);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.82rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.2);
+  padding-bottom:.2rem;
+  transition:color .2s,border-color .2s;
+}
+.btn-secondary:hover{color:var(--orange);border-color:var(--orange);}
+.btn-dark{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--black);color:var(--white);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;padding:.95rem 2.2rem;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
+  transition:background .2s;white-space:nowrap;
+  border:none;cursor:pointer;
+}
+.btn-dark:hover{background:var(--steel);}
+
+/* ─── WA ─── */
+.wa{
+  position:fixed;bottom:2rem;right:2rem;z-index:400;
+  width:58px;height:58px;
+  background:#25D366;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  box-shadow:0 4px 24px rgba(37,211,102,.4);
+  transition:transform .2s,box-shadow .2s;
+}
+.wa:hover{transform:scale(1.1);box-shadow:0 6px 32px rgba(37,211,102,.55);}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ─── KEYFRAMES ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  nav{padding:0 1.5rem;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-right{display:none;}
+  .hero-left{padding:5rem 1.5rem 4rem;}
+  .cat-grid{grid-template-columns:1fr 1fr;}
+  .store-split{grid-template-columns:1fr;}
+  .prod-grid{grid-template-columns:1fr;grid-template-rows:auto;}
+  .prod-card.featured{grid-row:span 1;min-height:320px;}
+  .about{grid-template-columns:1fr;gap:3rem;padding-top:3rem;}
+  .about-corner{right:0;bottom:-1rem;}
+  .cta-banner{grid-template-columns:1fr;padding:4rem 1.5rem;}
+  .cta-banner::before{display:none;}
+  .cta-btns{flex-direction:row;flex-wrap:wrap;}
+  .contact{grid-template-columns:1fr;}
+  .contact-map iframe{min-height:350px;}
+  .section{padding:5rem 1.5rem;}
+  footer{padding:2rem 1.5rem;flex-direction:column;align-items:flex-start;}
+  .s-header{flex-direction:column;align-items:flex-start;gap:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo-wrap">
+    <img class="nav-logo-img"
+      src="https://obrutus.com.br/wp-content/uploads/2022/02/cropped-brurus-logo.png"
+      alt="Brutus"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="nav-logo-text" style="display:none">BRU<span>TUS</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#categorias">Categorias</a></li>
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="#sobre">A Loja</a></li>
+    <li><a href="#contato">Contato</a></li>
+    <li><a href="https://wa.me/5553320419099" class="nav-cta">WhatsApp</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">Rio Grande — RS · Materiais de Construção</div>
+    <h1 class="hero-title">TUDO PARA<br>SUA <em>OBRA</em><br>COMEÇA<br>AQUI.</h1>
+    <p class="hero-tagline">Da terraplanagem até o acabamento.</p>
+    <p class="hero-desc">As principais marcas de material de construção você encontra na Brutus. Atendimento próximo, estoque completo e entrega em Rio Grande-RS.</p>
+    <div class="hero-actions">
+      <a href="#categorias" class="btn-primary">Ver Produtos →</a>
+      <a href="#contato" class="btn-secondary">Como chegar ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <img class="hero-img"
+      src="https://obrutus.com.br/wp-content/uploads/2022/02/2020-landscape-1-1200x500.png"
+      alt="Loja Brutus"
+      onerror="this.src='https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1000&q=80'">
+    <div class="hero-badge">
+      <div class="hero-badge-num">500+</div>
+      <div class="hero-badge-label">Produtos em<br>estoque</div>
+    </div>
+    <div class="hero-cards">
+      <div class="hcard">
+        <div class="hcard-tag">Alvenaria</div>
+        <div class="hcard-name">Tijolo 9 Furos</div>
+        <div class="hcard-spec">11,5 × 14 × 24 cm</div>
+      </div>
+      <div class="hcard">
+        <div class="hcard-tag">Alvenaria</div>
+        <div class="hcard-name">Tijolo 6 Furos</div>
+        <div class="hcard-spec">9 × 14 × 19 cm</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-n">2022</div><div class="stat-l">Fundada em</div></div>
+  <div class="stat"><div class="stat-n">500+</div><div class="stat-l">Produtos em estoque</div></div>
+  <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Foco no cliente</div></div>
+  <div class="stat"><div class="stat-n">1</div><div class="stat-l">Loja em Rio Grande-RS</div></div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="mq-track">
+    <span class="mq-item"><span class="mq-dot"></span>Alvenaria</span>
+    <span class="mq-item"><span class="mq-dot"></span>Cimento &amp; Argamassa</span>
+    <span class="mq-item"><span class="mq-dot"></span>Ferragens</span>
+    <span class="mq-item"><span class="mq-dot"></span>Hidráulica</span>
+    <span class="mq-item"><span class="mq-dot"></span>Elétrica</span>
+    <span class="mq-item"><span class="mq-dot"></span>Tintas &amp; Acabamentos</span>
+    <span class="mq-item"><span class="mq-dot"></span>Telhados &amp; Coberturas</span>
+    <span class="mq-item"><span class="mq-dot"></span>Madeiras</span>
+    <span class="mq-item"><span class="mq-dot"></span>Entrega em Rio Grande</span>
+    <span class="mq-item"><span class="mq-dot"></span>Alvenaria</span>
+    <span class="mq-item"><span class="mq-dot"></span>Cimento &amp; Argamassa</span>
+    <span class="mq-item"><span class="mq-dot"></span>Ferragens</span>
+    <span class="mq-item"><span class="mq-dot"></span>Hidráulica</span>
+    <span class="mq-item"><span class="mq-dot"></span>Elétrica</span>
+    <span class="mq-item"><span class="mq-dot"></span>Tintas &amp; Acabamentos</span>
+    <span class="mq-item"><span class="mq-dot"></span>Telhados &amp; Coberturas</span>
+    <span class="mq-item"><span class="mq-dot"></span>Madeiras</span>
+    <span class="mq-item"><span class="mq-dot"></span>Entrega em Rio Grande</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section section-alt" id="categorias">
+  <div class="s-header reveal">
+    <div>
+      <div class="s-eye">O que você encontra</div>
+      <h2 class="s-title">CATEGORIAS<br><em>PRINCIPAIS</em></h2>
+    </div>
+    <a href="#contato" class="btn-secondary" style="margin-bottom:.4rem">Ver todas →</a>
+  </div>
+  <div class="cat-grid">
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Tenho+interesse+em+produtos+de+Alvenaria+%28tijolos%2C+blocos%2C+etc%29.+Podem+me+ajudar%3F" target="_blank" class="cat reveal d1"><div class="cat-hover-glow"></div><div class="cat-icon">🧱</div><div class="cat-name">Alvenaria</div><div class="cat-desc">Tijolos 6 e 9 furos, blocos cerâmicos, blocos de concreto e elementos vazados.</div><div class="cat-arrow">Ver mais →</div></a>
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Gostaria+de+saber+sobre+Cimento+e+Argamassa+dispon%C3%ADveis.+Podem+me+ajudar%3F" target="_blank" class="cat reveal d2"><div class="cat-hover-glow"></div><div class="cat-icon">🪣</div><div class="cat-name">Cimento</div><div class="cat-desc">Cimento Portland CP-II, argamassas, aditivos e produtos para fundação.</div><div class="cat-arrow">Ver mais →</div></a>
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Preciso+de+informa%C3%A7%C3%B5es+sobre+Ferragens+%28parafusos%2C+pregos%2C+arames%2C+etc%29.+Podem+me+atender%3F" target="_blank" class="cat reveal d3"><div class="cat-hover-glow"></div><div class="cat-icon">🔩</div><div class="cat-name">Ferragens</div><div class="cat-desc">Parafusos, arames, pregos, ferramentas e produtos de fixação em geral.</div><div class="cat-arrow">Ver mais →</div></a>
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Quero+saber+sobre+materiais+para+Telhados+e+Coberturas.+Voc%C3%AAs+t%C3%AAm+telhas+e+calhas%3F" target="_blank" class="cat reveal d4"><div class="cat-hover-glow"></div><div class="cat-icon">🪟</div><div class="cat-name">Telhados</div><div class="cat-desc">Telhas, calhas, rufos, impermeabilizantes e coberturas.</div><div class="cat-arrow">Ver mais →</div></a>
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Preciso+de+materiais+Hidr%C3%A1ulicos+%28tubos%2C+conex%C3%B5es%2C+registros%29.+Podem+me+ajudar%3F" target="_blank" class="cat reveal d1"><div class="cat-hover-glow"></div><div class="cat-icon">🚿</div><div class="cat-name">Hidráulica</div><div class="cat-desc">Tubos, conexões PVC, registros e materiais para instalações hidráulicas.</div><div class="cat-arrow">Ver mais →</div></a>
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Estou+precisando+de+materiais+El%C3%A9tricos+%28fios%2C+condu%C3%ADtes%2C+caixas%29.+Podem+me+orientar%3F" target="_blank" class="cat reveal d2"><div class="cat-hover-glow"></div><div class="cat-icon">⚡</div><div class="cat-name">Elétrica</div><div class="cat-desc">Fios, conduítes, caixas elétrica e dispositivos de proteção.</div><div class="cat-arrow">Ver mais →</div></a>
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Quero+ver+as+op%C3%A7%C3%B5es+de+Tintas+e+Acabamentos+que+voc%C3%AAs+t%C3%AAm.+Podem+me+atender%3F" target="_blank" class="cat reveal d3"><div class="cat-hover-glow"></div><div class="cat-icon">🎨</div><div class="cat-name">Acabamentos</div><div class="cat-desc">Tintas, vernizes, seladores, resinas e produtos para acabamento fino.</div><div class="cat-arrow">Ver mais →</div></a>
+    <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Preciso+de+Madeiras+para+obra+%28vigas%2C+caibros%2C+t%C3%A1buas%29.+Voc%C3%AAs+t%C3%AAm%3F" target="_blank" class="cat reveal d4"><div class="cat-hover-glow"></div><div class="cat-icon">🪵</div><div class="cat-name">Madeiras</div><div class="cat-desc">Vigas, caibros, tábuas e estruturas de madeira para sua obra.</div><div class="cat-arrow">Ver mais →</div></a>
+  </div>
+</section>
+
+<!-- STORE PHOTOS -->
+<div class="store-split" id="sobre">
+  <div class="store-photo">
+    <img src="https://obrutus.com.br/wp-content/uploads/2022/02/2020-landscape-1-1200x500.png" alt="Fachada Brutus"
+         onerror="this.src='https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=80'">
+    <div class="store-photo-cap">
+      <div class="store-cap-tag">Fachada</div>
+      <div class="store-cap-title">Nossa Loja Física</div>
+    </div>
+  </div>
+  <div class="store-photo">
+    <img src="https://obrutus.com.br/wp-content/uploads/2022/02/imagem1-1-1024x497.png" alt="Interior Brutus"
+         onerror="this.src='https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=900&q=80'">
+    <div class="store-photo-cap">
+      <div class="store-cap-tag">Interior</div>
+      <div class="store-cap-title">Estoque Completo</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section section-alt">
+  <div class="about">
+    <div class="about-visual reveal">
+      <div class="about-frame"></div>
+      <div class="about-img" role="img" aria-label="Loja Brutus interior"></div>
+      <div class="about-corner">
+        <div class="about-corner-num">3+</div>
+        <div class="about-corner-label">Anos de<br>Experiência</div>
+      </div>
+    </div>
+    <div class="about-text reveal d2">
+      <div class="s-eye">Quem Somos</div>
+      <h2 class="s-title" style="margin-bottom:1.5rem">PARA NÓS,<br>CADA OBRA<br><em>É UM SONHO.</em></h2>
+      <p>A Brutus nasceu com o objetivo de trazer conveniência e proximidade ao mercado de materiais de construção em Rio Grande, RS. Nossa primeira loja física está localizada na Av. Santos Dumont, 801, no Bairro Junção.</p>
+      <p>Seja qual for o tamanho do seu projeto — uma reforma, uma construção do zero ou um simples acabamento — você encontra aqui as principais marcas com atendimento de qualidade.</p>
+      <ul class="store-list">
+        <li>Amplo estoque de produtos</li>
+        <li>Atendimento personalizado</li>
+        <li>Entrega em Rio Grande-RS</li>
+        <li>Da terraplanagem ao acabamento</li>
+      </ul>
+      <a href="#contato" class="btn-primary">Fale com a Gente →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section" id="produtos">
+  <div class="s-header reveal">
+    <div>
+      <div class="s-eye">Destaques</div>
+      <h2 class="s-title">PRODUTOS EM<br><em>DESTAQUE</em></h2>
+    </div>
+  </div>
+  <div class="prod-grid">
+    <div class="prod-card featured reveal">
+      <div class="prod-badge">Mais Vendido</div>
+      <div class="prod-tag">Alvenaria</div>
+      <h3 class="prod-name lg">Tijolo<br>9 Furos</h3>
+      <p class="prod-desc">O tijolo mais utilizado em construção civil. Resistência estrutural, leveza e excelente isolamento térmico para paredes externas e internas.</p>
+      <span class="prod-spec">📏 11,5 × 14 × 24 cm</span><br>
+      <a href="https://wa.me/5553320419099?text=Ol%C3%A1%2C+Brutus!+Gostaria+de+saber+o+pre%C3%A7o+do+Tijolo+9+Furos+%2811%2C5x14x24+cm%29%2C+o+produto+mais+vendido+de+voc%C3%AAs.+Podem+me+passar+os+valores+e+disponibilidade%3F" target="_blank" class="btn-primary" style="margin-top:1rem">Consultar Preço →</a>
+    </div>
+    <div class="prod-card reveal d1">
+      <div class="prod-tag">Alvenaria</div>
+      <h3 class="prod-name">Tijolo 6 Furos</h3>
+      <p class="prod-desc">Ideal para divisórias e paredes internas. Alta produtividade no assentamento.</p>
+      <span class="prod-spec">📏 9 × 14 × 19 cm</span>
+    </div>
+    <div class="prod-card reveal d2">
+      <div class="prod-tag">Cimento</div>
+      <h3 class="prod-name">Cimento CP-II</h3>
+      <p class="prod-desc">Alta performance para estruturas, argamassas e obras em geral.</p>
+      <span class="prod-spec">⚖️ Saco 50 kg</span>
+    </div>
+    <div class="prod-card reveal d1">
+      <div class="prod-tag">Agregados</div>
+      <h3 class="prod-name">Areia Grossa</h3>
+      <p class="prod-desc">Areia lavada selecionada, perfeita para concreto e argamassas estruturais.</p>
+      <span class="prod-spec">📦 Entrega em cargas</span>
+    </div>
+    <div class="prod-card reveal d2">
+      <div class="prod-tag">Agregados</div>
+      <h3 class="prod-name">Brita 0 e 1</h3>
+      <p class="prod-desc">Essencial para fundações, lajes e concreto estrutural de qualidade.</p>
+      <span class="prod-spec">📦 Entrega em cargas</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner">
+  <div>
+    <h2 class="cta-banner-title reveal">PRECISA DE MATERIAL?<br>VEM CONFERIR.</h2>
+    <p class="cta-banner-sub reveal d1">Visite nossa loja ou mande uma mensagem. Temos tudo que sua obra precisa com preço justo e entrega rápida em Rio Grande.</p>
+  </div>
+  <div class="cta-btns reveal d2">
+    <a href="https://wa.me/5553320419099" class="btn-dark">💬 Chamar no WhatsApp</a>
+    <a href="tel:5332041909" class="btn-dark">📞 (53) 3204-1909</a>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contato">
+  <div class="contact">
+    <div class="contact-info reveal">
+      <div>
+        <div class="s-eye">Contato</div>
+        <h2 class="s-title" style="margin-bottom:2rem">ONDE<br><em>ESTAMOS</em></h2>
+      </div>
+      <div class="c-item">
+        <div class="c-ico">📍</div>
+        <div><div class="c-label">Endereço</div><div class="c-val">Av. Santos Dumont, 801<br>Bairro Junção — Rio Grande, RS<br>CEP 96.202-090</div></div>
+      </div>
+      <div class="c-item">
+        <div class="c-ico">📞</div>
+        <div><div class="c-label">Telefone</div><div class="c-val"><a href="tel:5332041909">(53) 3204-1909</a></div></div>
+      </div>
+      <div class="c-item">
+        <div class="c-ico">🕐</div>
+        <div><div class="c-label">Horário</div><div class="c-val">Seg – Sex: 07h30 às 18h00<br>Sábado: 07h30 às 12h00</div></div>
+      </div>
+      <div class="c-item">
+        <div class="c-ico">📱</div>
+        <div><div class="c-label">WhatsApp</div><div class="c-val"><a href="https://wa.me/5553320419099">(53) 3204-1909</a></div></div>
+      </div>
+    </div>
+
+    <div class="contact-map reveal d2">
+      <div class="contact-map-label">📍 Como Chegar</div>
+      <iframe
+        src="https://maps.google.com/maps?q=Av.+Santos+Dumont+801+Rio+Grande+RS+Brasil&output=embed&hl=pt-BR&z=16"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Localização Brutus">
+      </iframe>
+      <div class="contact-map-btn">
+        <a href="https://maps.google.com/?q=Av.+Santos+Dumont,+801,+Rio+Grande,+RS" target="_blank" class="btn-primary">Abrir no Maps ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="foot-logo">
+    <img src="https://obrutus.com.br/wp-content/uploads/2022/02/cropped-brurus-logo.png" alt="Brutus"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="foot-logo-text" style="display:none">BRU<span>TUS</span></span>
+  </a>
+  <span class="foot-copy">© 2026 Brutus Materiais de Construção · Rio Grande, RS</span>
+  <div class="foot-soc">
+    <a href="#" class="soc" aria-label="Facebook">f</a>
+    <a href="#" class="soc" aria-label="Instagram">✦</a>
+    <a href="https://wa.me/5553320419099" class="soc" aria-label="WhatsApp">w</a>
+  </div>
+</footer>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/5553320419099" class="wa" target="_blank" aria-label="WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+</a>
+
+<script>
+// Nav shadow on scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
